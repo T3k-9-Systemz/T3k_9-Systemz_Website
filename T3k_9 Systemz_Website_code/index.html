@@ -315,7 +315,7 @@
     <div class="hero-text">
       <span class="eyebrow">Everett Pulskamp — Maker &amp; Engineering Student</span>
       <h1>Building electronics, robots, and software under the T3K_9 Systemz name.</h1>
-      <p class="hero-lede">I design PCBs, program microcontrollers, and build robotics software — mostly for FRC Team 9271, the Cyber Porpoises, and for my own projects on the side. This page tracks what I've built, in the order I built it.</p>
+      <p class="hero-lede">I design PCBs, program microcontrollers, and do just about everything in between so I can teach myself more about engineering and to further my skills. This page tracks what I've built, in the order I built it.</p>
       <div class="cta-row">
         <a class="btn primary" href="projects/index.html">Explore projects</a>
         <a class="btn" href="https://github.com/T3k-9-Systemz">GitHub ↗</a>
@@ -381,7 +381,7 @@
       <div class="tl-date">May 2026</div>
       <div class="tl-card">
         <div class="tl-head"><h3>Engineering Sophomore Solo Project</h3><span class="status">Complete</span></div>
-        <p class="tl-desc">An independent project built for my sophomore-year Engineering class — my first solo Python build done for coursework rather than for fun.</p>
+        <p class="tl-desc"> My first macropad that I built for my final project for my sophomore engineering class.</p>
         <div class="tl-meta">
           <span class="chip">Python</span><span class="chip">Coursework</span>
           <a class="tl-link" href="https://github.com/T3k-9-Systemz/2026_Engineering_Sophomore_Solo_Project">Repo ↗</a>
@@ -425,8 +425,8 @@
   </div>
   <div class="about-grid">
     <div>
-      <p>I'm an engineering student based in Laguna Niguel, CA, building under the name T3K_9 Systemz. I care about anything with a circuit board or a chassis — electronics, PCB design, robotics programming, and manufacturing.</p>
-      <p>Most of my hands-on work happens through FRC Team 9271, the Cyber Porpoises, where I focus on the electrical and manufacturing side of the robot. Outside of competition season, I build my own tools — like MakoPad, a macropad designed for teammates doing FRC programming — and take on smaller solo projects to keep learning.</p>
+      <p>I'm an engineering student at Capistrano Valley High School based in Laguna Niguel, CA, building under the name T3K_9 Systemz. I care about anything with a circuit board or a chassis — electronics, PCB design, robotics programming, and manufacturing.</p>
+      <p>Most of my hands-on work happens through FRC Team 9271, the Cyber Porpoises, where I focus on the electrical and manufacturing side of the robot. Outside of competition season, I build my own tools — like the MakoPad, a macropad designed for teammates doing FRC programming — and take on solo projects to keep learning.</p>
     </div>
     <div class="about-card">
       <h3>ELSEWHERE</h3>
@@ -571,14 +571,14 @@
     raf = requestAnimationFrame(tick);
 
     var caliperEl = document.getElementById('caliperReadout');
-    var target = 2.540;
+    var target = 8.396;
     var cStart = performance.now();
     function tickCaliper(now){
       var elapsed = now - cStart;
       var p = Math.min(1, elapsed/6000);
       var eased = 1 - Math.pow(1-p,3);
       var val = p>=1 ? target.toFixed(3) : (Math.random()*3 + eased*target).toFixed(3);
-      caliperEl.innerHTML = val + '<span class="unit">mm</span>';
+      caliperEl.innerHTML = val + '<span class="unit">in</span>';
       if(p<1) requestAnimationFrame(tickCaliper);
     }
     requestAnimationFrame(tickCaliper);
