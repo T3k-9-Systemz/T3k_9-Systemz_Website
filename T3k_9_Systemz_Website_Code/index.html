@@ -47,6 +47,8 @@
   nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:var(--maxw);margin:0 auto}
   .brandmark{font-weight:700;font-size:1.05rem;letter-spacing:.02em;color:var(--text);display:flex;align-items:center;gap:10px}
   .brandmark .dot{color:var(--blue)}
+  .brandmark-image{flex:0 1 auto;line-height:0}
+  .brandmark-image img{display:block;width:clamp(152px,21vw,230px);max-height:72px;object-fit:contain;mix-blend-mode:screen}
   .navlinks{display:flex;gap:28px;font-size:.92rem}
   .navlinks a{color:var(--text-dim)}
   .navlinks a:hover{color:var(--text);text-decoration:none}
@@ -67,8 +69,10 @@
     mask-image:radial-gradient(ellipse 60% 50% at 50% 0%, black 40%, transparent 78%);
   }
   .hero-inner{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;display:flex;gap:40px;align-items:center;flex-wrap:wrap}
-  .hero-logo{width:150px;height:150px;border-radius:50%;flex:0 0 auto;box-shadow:0 0 0 1px var(--line), 0 20px 60px -20px rgba(74,163,255,.35)}
+  .hero-logo{width:190px;height:190px;border-radius:50%;flex:0 0 auto;box-shadow:0 0 0 1px var(--line), 0 20px 60px -20px rgba(74,163,255,.35)}
   .hero-text{flex:1 1 340px;min-width:0}
+  @media(max-width:680px){nav{padding:10px 16px}.navlinks{gap:14px;font-size:.85rem}.brandmark-image img{width:clamp(126px,38vw,170px);max-height:56px}}
+  @media(max-width:640px){.hero-inner{justify-content:center;text-align:center}.hero-logo{width:clamp(150px,42vw,190px);height:auto;aspect-ratio:1}.hero-lede{margin-inline:auto}.cta-row{justify-content:center}}
   .eyebrow{color:var(--blue);font-size:.82rem;font-weight:600;letter-spacing:.08em}
   h1{font-size:clamp(1.8rem,4.4vw,2.6rem);margin:.35em 0 .3em;font-weight:700;line-height:1.15}
   .hero-lede{color:var(--text-dim);font-size:1.05rem;max-width:52ch;margin:0 0 20px}
@@ -300,9 +304,11 @@
 
 <header>
   <nav>
-    <div class="brandmark"><span class="dot">T9</span>&nbsp;T3K_9 SYSTEMZ</div>
+    <a class="brandmark brandmark-image" href="index.html" aria-label="T3K_9 Systemz home">
+      <img src="assets/t3k9-systemz-horizontal-logo.png" alt="T3K_9 Systemz">
+    </a>
     <div class="navlinks">
-      <a href="index.html">Home</a>
+      <a href="index.html" aria-current="page">Home</a>
       <a href="projects/index.html">Projects</a>
       <a href="about.html">About</a>
     </div>
@@ -323,6 +329,35 @@
       <div class="tagline">BUILD <b>//</b> TINKER <b>//</b> INNOVATE</div>
     </div>
   </div>
+</section>
+
+<section class="section wrap home-featured">
+  <div class="section-head">
+    <span class="eyebrow">ENGINEERING LOG</span>
+    <h2>Selected projects</h2>
+    <p class="section-sub">A few of the builds that show how T3K_9 Systemz has developed from software experiments into hardware and embedded systems.</p>
+  </div>
+  <div class="cards">
+    <article class="card">
+      <span class="status">AUGUST 2026 · IN PROGRESS</span>
+      <h3>MakoPad Mk1</h3>
+      <p>Custom macropad combining PCB design, QMK firmware, an LCD, rotary encoder, and mechanical CAD.</p>
+      <a class="button primary" href="projects/makopad-mk1.html">Read engineering log →</a>
+    </article>
+    <article class="card">
+      <span class="status">JULY 2026 · COMPLETE</span>
+      <h3>canENDR</h3>
+      <p>A compact PCB terminator designed around an FRC CAN-bus application.</p>
+      <a class="button primary" href="projects/canendr.html">Read engineering log →</a>
+    </article>
+    <article class="card">
+      <span class="status">MAY 2026 · PROTOTYPE</span>
+      <h3>BPS-analyzer</h3>
+      <p>An experimental computer-vision scouting tool for extracting FRC match metrics from video.</p>
+      <a class="button primary" href="projects/bps-analyzer.html">Read engineering log →</a>
+    </article>
+  </div>
+  <p><a class="button" href="projects/index.html">View the complete project archive →</a></p>
 </section>
 
 <section id="projects" hidden>
