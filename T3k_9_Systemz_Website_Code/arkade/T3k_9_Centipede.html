@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>T3K_9 Systemz // Centipede</title>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+
+    --cyan: #18d9ff;
+    --blue: #1477ff;
+    --red: #ff4161;
+
+    --bg: #050912;
+    --panel: #08111e;
+    --line: #12304b;
+    --text: #d9f7ff;
+
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    background:
+
+        radial-gradient(
+            circle at 50% -10%,
+            #102844 0%,
+            transparent 38%
+        ),
+
+        #050912;
+
+    color: var(--text);
+
+    font-family:
+        Orbitron,
+        Arial,
+        sans-serif;
+
+}
+
+
+/* Technical grid */
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.08;
+
+    background-image:
+
+        linear-gradient(
+            #18d9ff 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            #18d9ff 1px,
+            transparent 1px
+        );
+
+    background-size: 42px 42px;
+
+}
+
+
+.shell {
+
+    width:
+        min(1180px, 96vw);
+
+    margin:
+        24px auto 40px;
+
+}
+
+
+.top {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 24px;
+
+    border-bottom:
+        1px solid var(--line);
+
+    padding:
+        10px 10px 18px;
+
+}
+
+
+.logo {
+
+    width: 190px;
+
+    max-height: 74px;
+
+    object-fit: contain;
+
+}
+
+
+.logoFallback {
+
+    width: 190px;
+
+    text-align: center;
+
+    color: var(--cyan);
+
+    font-weight: 800;
+
+    letter-spacing: 3px;
+
+}
+
+
+.title {
+
+    flex: 1;
+
+}
+
+
+.kicker {
+
+    color: var(--cyan);
+
+    font-size: 12px;
+
+    letter-spacing: 3px;
+
+}
+
+
+.title h1 {
+
+    margin:
+        5px 0 0;
+
+    font-size: 28px;
+
+    letter-spacing: 4px;
+
+}
+
+
+.layout {
+
+    display: grid;
+
+    grid-template-columns:
+        230px
+        minmax(0, 720px)
+        230px;
+
+    gap: 18px;
+
+    align-items: start;
+
+    margin-top: 20px;
+
+}
+
+
+.card {
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(10, 25, 42, .96),
+            rgba(4, 10, 18, .96)
+        );
+
+    border:
+        1px solid #164263;
+
+    padding: 18px;
+
+    clip-path:
+        polygon(
+            12px 0,
+            100% 0,
+            100% calc(100% - 12px),
+            calc(100% - 12px) 100%,
+            0 100%,
+            0 12px
+        );
+
+}
+
+
+.card h2 {
+
+    font-size: 13px;
+
+    letter-spacing: 2px;
+
+    color: var(--cyan);
+
+    margin:
+        0 0 15px;
+
+}
+
+
+.stat {
+
+    border-top:
+        1px solid #14324a;
+
+    padding:
+        12px 0;
+
+}
+
+
+.label {
+
+    font-size: 10px;
+
+    color: #6d94aa;
+
+    letter-spacing: 1px;
+
+}
+
+
+.value {
+
+    font-size: 23px;
+
+    margin-top: 4px;
+
+}
+
+
+.controls {
+
+    font-size: 11px;
+
+    line-height: 1.9;
+
+    color: #a9c8d7;
+
+}
+
+
+kbd {
+
+    border:
+        1px solid #31546c;
+
+    background:
+        #0b1a29;
+
+    padding:
+        2px 6px;
+
+    color: white;
+
+}
+
+
+.gamebox {
+
+    position: relative;
+
+    border:
+        1px solid #1b6b91;
+
+    padding: 8px;
+
+    background: #02050a;
+
+    box-shadow:
+
+        0 0 35px
+        rgba(24,217,255,.08),
+
+        inset 0 0 35px
+        rgba(20,119,255,.05);
+
+}
+
+
+canvas {
+
+    display: block;
+
+    width: 100%;
+
+    height: auto;
+
+    background: #000;
+
+}
+
+
+.overlay {
+
+    position: absolute;
+
+    inset: 8px;
+
+    display: none;
+
+    place-items: center;
+
+    background:
+        rgba(0,0,0,.72);
+
+    text-align: center;
+
+}
+
+
+.overlay.show {
+
+    display: grid;
+
+}
+
+
+.overlay h2 {
+
+    font-size: 28px;
+
+    color: var(--cyan);
+
+    letter-spacing: 4px;
+
+}
+
+
+button {
+
+    width: 100%;
+
+    margin-top: 9px;
+
+    padding: 11px;
+
+    background: #091a2a;
+
+    color: var(--cyan);
+
+    border:
+        1px solid #176087;
+
+    font:
+        700 11px Orbitron;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+}
+
+
+button:hover {
+
+    background: #0d2940;
+
+    box-shadow:
+        0 0 15px
+        rgba(24,217,255,.2);
+
+}
+
+
+@media(max-width:950px) {
+
+    .layout {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .card {
+
+        order: 2;
+
+    }
+
+    .gamebox {
+
+        order: 1;
+
+    }
+
+    .logo {
+
+        width: 145px;
+
+    }
+
+}
+
+</style>
+
+
+<link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png">
+<link rel="shortcut icon" href="../assets/favicon.ico">
+</head>
+
+<body>
+
+<div class="shell">
+
+
+<header class="top">
+
+    <!--
+    Replace this with your actual T3K_9 logo if desired.
+
+    Example:
+
+    <img
+        class="logo"
+        src="T3K_9_logo.png"
+        alt="T3K_9 Systemz">
+    -->
+
+    <div class="logoFallback">
+
+        T3K_9<br>
+
+        SYSTEMZ
+
+    </div>
+
+
+    <div class="title">
+
+        <div class="kicker">
+
+            T3K_9 //
+            ARCADE MODULE ARC-009
+
+        </div>
+
+        <h1>
+
+            CENTIPEDE
+
+        </h1>
+
+    </div>
+
+</header>
+
+
+<div class="layout">
+
+
+<!-- =====================================================
+     TELEMETRY
+     ===================================================== -->
+
+<aside class="card">
+
+    <h2>
+        TELEMETRY
+    </h2>
+
+
+    <div class="stat">
+
+        <div class="label">
+            SCORE
+        </div>
+
+        <div
+            class="value"
+            id="score">
+            0
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="label">
+            HIGH SCORE
+        </div>
+
+        <div
+            class="value"
+            id="high">
+            0
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="label">
+            LIVES
+        </div>
+
+        <div
+            class="value"
+            id="lives">
+            3
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="label">
+            LEVEL
+        </div>
+
+        <div
+            class="value"
+            id="level">
+            1
+        </div>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =====================================================
+     GAME
+     ===================================================== -->
+
+<main class="gamebox">
+
+    <canvas
+        id="game"
+        width="720"
+        height="560">
+    </canvas>
+
+
+    <div
+        class="overlay"
+        id="overlay">
+
+        <div>
+
+            <h2 id="ovtitle">
+                PAUSED
+            </h2>
+
+            <p>
+                PRESS P TO RESUME
+            </p>
+
+            <button onclick="reset()">
+                RESTART MODULE
+            </button>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+
+<!-- =====================================================
+     CONTROLS
+     ===================================================== -->
+
+<aside class="card">
+
+    <h2>
+        CONTROL INPUT
+    </h2>
+
+
+    <div class="controls">
+
+        <kbd>←</kbd>
+        <kbd>→</kbd>
+        MOVE
+
+        <br>
+
+        <kbd>↑</kbd>
+        <kbd>↓</kbd>
+        VERTICAL
+
+        <br>
+
+        <kbd>SPACE</kbd>
+        FIRE
+
+        <br>
+
+        <kbd>P</kbd>
+        PAUSE
+
+        <br>
+
+        <kbd>R</kbd>
+        RESTART
+
+    </div>
+
+
+    <button onclick="togglePause()">
+        PAUSE / RESUME
+    </button>
+
+
+    <button onclick="reset()">
+        NEW RUN
+    </button>
+
+
+    <div class="stat">
+
+        <div class="label">
+            MODULE
+        </div>
+
+        <div class="value">
+            ARC-009
+        </div>
+
+    </div>
+
+</aside>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   T3K_9 SYSTEMZ
+   CENTIPEDE
+   ARC-009
+   ========================================================= */
+
+
+const canvas =
+    document.getElementById("game");
+
+const ctx =
+    canvas.getContext("2d");
+
+
+const W = canvas.width;
+const H = canvas.height;
+
+
+/* =========================================================
+   HIGH SCORE
+   ========================================================= */
+
+const HIGH_SCORE_KEY =
+    "t3k9-centipede-highscore";
+
+
+let highScore =
+    Number(
+        localStorage.getItem(
+            HIGH_SCORE_KEY
+        )
+    ) || 0;
+
+
+/* =========================================================
+   GAME STATE
+   ========================================================= */
+
+let keys = {};
+
+let score = 0;
+
+let lives = 3;
+
+let level = 1;
+
+let paused = false;
+
+let gameOver = false;
+
+let lastTime = 0;
+
+
+/* =========================================================
+   OBJECTS
+   ========================================================= */
+
+let player;
+
+let shots = [];
+
+let mushrooms = [];
+
+let centipede = [];
+
+let spiders = [];
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        keys[event.code] = true;
+
+
+        if (
+
+            [
+                "ArrowLeft",
+                "ArrowRight",
+                "ArrowUp",
+                "ArrowDown",
+                "Space"
+
+            ].includes(event.code)
+
+        ) {
+
+            event.preventDefault();
+
+        }
+
+
+        if (
+
+            event.code === "KeyP" &&
+            !event.repeat
+
+        ) {
+
+            togglePause();
+
+        }
+
+
+        if (
+
+            event.code === "KeyR" &&
+            !event.repeat
+
+        ) {
+
+            reset();
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "keyup",
+    event => {
+
+        keys[event.code] = false;
+
+    }
+);
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+function reset() {
+
+    score = 0;
+
+    lives = 3;
+
+    level = 1;
+
+    paused = false;
+
+    gameOver = false;
+
+    shots = [];
+
+    spiders = [];
+
+
+    player = {
+
+        x: W / 2,
+
+        y: H - 35,
+
+        cooldown: 0
+
+    };
+
+
+    createMushrooms();
+
+    createCentipede();
+
+    updateOverlay();
+
+}
+
+
+/* =========================================================
+   CREATE MUSHROOM FIELD
+   ========================================================= */
+
+function createMushrooms() {
+
+    mushrooms = [];
+
+
+    for (
+        let i = 0;
+        i < 55;
+        i++
+    ) {
+
+        mushrooms.push({
+
+            x:
+                30 +
+                Math.floor(
+                    Math.random() * 44
+                ) * 15,
+
+            y:
+                55 +
+                Math.floor(
+                    Math.random() * 30
+                ) * 14,
+
+            health: 2
+
+        });
+
+    }
+
+}
+
+
+/* =========================================================
+   CREATE CENTIPEDE
+   ========================================================= */
+
+function createCentipede() {
+
+    centipede = [];
+
+
+    const count =
+        11 + level;
+
+
+    for (
+        let i = 0;
+        i < count;
+        i++
+    ) {
+
+        centipede.push({
+
+            x:
+                W / 2 -
+                i * 22,
+
+            y: 45,
+
+            direction:
+                level % 2 === 0
+                    ? -1
+                    : 1
+
+        });
+
+    }
+
+}
+
+
+/* =========================================================
+   FIRE
+   ========================================================= */
+
+function firePlayer() {
+
+    if (
+        player.cooldown > 0
+    ) {
+
+        return;
+
+    }
+
+
+    shots.push({
+
+        x: player.x,
+
+        y: player.y - 10
+
+    });
+
+
+    player.cooldown =
+        0.17;
+
+}
+
+
+/* =========================================================
+   PLAYER HIT
+   ========================================================= */
+
+function playerHit() {
+
+    lives--;
+
+    shots = [];
+
+    player.x = W / 2;
+
+    player.y = H - 35;
+
+
+    if (lives <= 0) {
+
+        gameOver = true;
+
+
+        if (score > highScore) {
+
+            highScore = score;
+
+
+            localStorage.setItem(
+
+                HIGH_SCORE_KEY,
+
+                highScore
+
+            );
+
+        }
+
+
+        updateOverlay();
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE
+   ========================================================= */
+
+function update(delta) {
+
+    if (
+        paused ||
+        gameOver
+    ) {
+
+        return;
+
+    }
+
+
+    player.cooldown -= delta;
+
+
+    /* Player movement */
+
+    if (keys.ArrowLeft) {
+
+        player.x -=
+            350 * delta;
+
+    }
+
+
+    if (keys.ArrowRight) {
+
+        player.x +=
+            350 * delta;
+
+    }
+
+
+    if (keys.ArrowUp) {
+
+        player.y -=
+            300 * delta;
+
+    }
+
+
+    if (keys.ArrowDown) {
+
+        player.y +=
+            300 * delta;
+
+    }
+
+
+    player.x =
+        Math.max(
+            15,
+            Math.min(
+                W - 15,
+                player.x
+            )
+        );
+
+
+    player.y =
+        Math.max(
+            H - 150,
+            Math.min(
+                H - 18,
+                player.y
+            )
+        );
+
+
+    if (keys.Space) {
+
+        firePlayer();
+
+    }
+
+
+    /* Shots */
+
+    for (const shot of shots) {
+
+        shot.y -=
+            600 * delta;
+
+    }
+
+
+    shots =
+        shots.filter(
+            shot => shot.y > -20
+        );
+
+
+    /* =====================================================
+       MUSHROOM COLLISIONS
+       ===================================================== */
+
+    for (
+        let i = shots.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        let destroyedShot = false;
+
+
+        for (
+            let j = mushrooms.length - 1;
+            j >= 0;
+            j--
+        ) {
+
+            const mushroom =
+                mushrooms[j];
+
+
+            const shot =
+                shots[i];
+
+
+            if (
+
+                Math.abs(
+                    shot.x -
+                    mushroom.x
+                ) < 10
+
+                &&
+
+                Math.abs(
+                    shot.y -
+                    mushroom.y
+                ) < 10
+
+            ) {
+
+                mushroom.health--;
+
+                shots.splice(
+                    i,
+                    1
+                );
+
+                destroyedShot = true;
+
+
+                if (
+                    mushroom.health <= 0
+                ) {
+
+                    mushrooms.splice(
+                        j,
+                        1
+                    );
+
+                    score += 5;
+
+                }
+
+
+                break;
+
+            }
+
+        }
+
+
+        if (destroyedShot)
+            continue;
+
+
+        /* =================================================
+           CENTIPEDE COLLISION
+           ================================================= */
+
+        for (
+            let j = centipede.length - 1;
+            j >= 0;
+            j--
+        ) {
+
+            const segment =
+                centipede[j];
+
+
+            const shot =
+                shots[i];
+
+
+            if (
+
+                Math.abs(
+                    shot.x -
+                    segment.x
+                ) < 13
+
+                &&
+
+                Math.abs(
+                    shot.y -
+                    segment.y
+                ) < 13
+
+            ) {
+
+                shots.splice(
+                    i,
+                    1
+                );
+
+
+                centipede.splice(
+                    j,
+                    1
+                );
+
+
+                score += 20;
+
+
+                break;
+
+            }
+
+        }
+
+    }
+
+
+    /* =====================================================
+       CENTIPEDE MOVEMENT
+       ===================================================== */
+
+    for (
+        const segment of centipede
+    ) {
+
+        segment.x +=
+
+            segment.direction *
+
+            (
+                80 +
+                level * 5
+            ) *
+
+            delta;
+
+
+        if (
+
+            segment.x < 12 ||
+            segment.x > W - 12
+
+        ) {
+
+            segment.x =
+                Math.max(
+                    12,
+                    Math.min(
+                        W - 12,
+                        segment.x
+                    )
+                );
+
+
+            segment.y += 22;
+
+
+            segment.direction *= -1;
+
+        }
+
+    }
+
+
+    /* New wave */
+
+    if (
+        centipede.length === 0
+    ) {
+
+        level++;
+
+        createCentipede();
+
+        createMushrooms();
+
+    }
+
+
+    /* =====================================================
+       SPIDERS
+       ===================================================== */
+
+    if (
+        Math.random() <
+        delta *
+        (
+            0.18 +
+            level * 0.025
+        )
+    ) {
+
+        spiders.push({
+
+            x:
+                Math.random() * W,
+
+            y:
+                H - 110 +
+                Math.random() * 80,
+
+            direction:
+                Math.random() < .5
+                    ? -1
+                    : 1
+
+        });
+
+    }
+
+
+    for (
+        const spider of spiders
+    ) {
+
+        spider.x +=
+
+            spider.direction *
+
+            (
+                120 +
+                level * 10
+            ) *
+
+            delta;
+
+
+        if (
+            spider.x < 0 ||
+            spider.x > W
+        ) {
+
+            spider.direction *= -1;
+
+        }
+
+
+        if (
+
+            Math.abs(
+                spider.x -
+                player.x
+            ) < 20
+
+            &&
+
+            Math.abs(
+                spider.y -
+                player.y
+            ) < 18
+
+        ) {
+
+            playerHit();
+
+        }
+
+    }
+
+
+    spiders =
+        spiders.filter(
+            spider =>
+                spider.y <
+                H + 20
+        );
+
+
+    updateHUD();
+
+}
+
+
+/* =========================================================
+   DRAW
+   ========================================================= */
+
+function draw() {
+
+    ctx.clearRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    ctx.fillStyle =
+        "#000";
+
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    /* Grid */
+
+    ctx.strokeStyle =
+        "#071826";
+
+
+    for (
+        let y = 0;
+        y < H;
+        y += 28
+    ) {
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            0,
+            y
+        );
+
+        ctx.lineTo(
+            W,
+            y
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    /* =====================================================
+       MUSHROOMS
+       ===================================================== */
+
+    for (
+        const mushroom of mushrooms
+    ) {
+
+        ctx.fillStyle =
+            mushroom.health === 2
+                ? "#18d9ff"
+                : "#1477ff";
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+
+            mushroom.x,
+            mushroom.y,
+
+            9,
+
+            Math.PI,
+            0
+
+        );
+
+
+        ctx.lineTo(
+            mushroom.x + 9,
+            mushroom.y + 8
+        );
+
+
+        ctx.lineTo(
+            mushroom.x - 9,
+            mushroom.y + 8
+        );
+
+
+        ctx.fill();
+
+    }
+
+
+    /* =====================================================
+       PLAYER SHOTS
+       ===================================================== */
+
+    ctx.fillStyle =
+        "#18d9ff";
+
+
+    for (
+        const shot of shots
+    ) {
+
+        ctx.fillRect(
+
+            shot.x - 2,
+            shot.y,
+
+            4,
+            12
+
+        );
+
+    }
+
+
+    /* =====================================================
+       CENTIPEDE
+       ===================================================== */
+
+    for (
+        let i = 0;
+        i < centipede.length;
+        i++
+    ) {
+
+        const segment =
+            centipede[i];
+
+
+        ctx.fillStyle =
+            i === 0
+                ? "#ffffff"
+                : "#18d9ff";
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+
+            segment.x,
+            segment.y,
+
+            10,
+
+            0,
+            Math.PI * 2
+
+        );
+
+
+        ctx.fill();
+
+
+        /* Eyes */
+
+        ctx.fillStyle =
+            "#000";
+
+
+        ctx.fillRect(
+
+            segment.x - 5,
+            segment.y - 3,
+
+            3,
+            3
+
+        );
+
+
+        ctx.fillRect(
+
+            segment.x + 2,
+            segment.y - 3,
+
+            3,
+            3
+
+        );
+
+    }
+
+
+    /* =====================================================
+       SPIDERS
+       ===================================================== */
+
+    for (
+        const spider of spiders
+    ) {
+
+        ctx.fillStyle =
+            "#ff4161";
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+
+            spider.x,
+            spider.y,
+
+            11,
+
+            0,
+            Math.PI * 2
+
+        );
+
+
+        ctx.fill();
+
+
+        ctx.strokeStyle =
+            "#ff4161";
+
+
+        for (
+            let i = 0;
+            i < 8;
+            i++
+        ) {
+
+            const angle =
+                i *
+                Math.PI /
+                4;
+
+
+            ctx.beginPath();
+
+
+            ctx.moveTo(
+                spider.x,
+                spider.y
+            );
+
+
+            ctx.lineTo(
+
+                spider.x +
+                Math.cos(angle) * 20,
+
+                spider.y +
+                Math.sin(angle) * 12
+
+            );
+
+
+            ctx.stroke();
+
+        }
+
+    }
+
+
+    /* =====================================================
+       PLAYER
+       ===================================================== */
+
+    ctx.save();
+
+
+    ctx.translate(
+        player.x,
+        player.y
+    );
+
+
+    ctx.fillStyle =
+        "#1477ff";
+
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+        0,
+        -16
+    );
+
+
+    ctx.lineTo(
+        15,
+        12
+    );
+
+
+    ctx.lineTo(
+        0,
+        7
+    );
+
+
+    ctx.lineTo(
+        -15,
+        12
+    );
+
+
+    ctx.closePath();
+
+
+    ctx.fill();
+
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   HUD
+   ========================================================= */
+
+function updateHUD() {
+
+    document.getElementById(
+        "score"
+    ).textContent =
+        score.toLocaleString();
+
+
+    document.getElementById(
+        "high"
+    ).textContent =
+        highScore.toLocaleString();
+
+
+    document.getElementById(
+        "lives"
+    ).textContent =
+        lives;
+
+
+    document.getElementById(
+        "level"
+    ).textContent =
+        level;
+
+}
+
+
+/* =========================================================
+   PAUSE
+   ========================================================= */
+
+function togglePause() {
+
+    if (gameOver)
+        return;
+
+
+    paused = !paused;
+
+    updateOverlay();
+
+}
+
+
+function updateOverlay() {
+
+    const overlay =
+        document.getElementById(
+            "overlay"
+        );
+
+
+    overlay.classList.toggle(
+        "show",
+        paused || gameOver
+    );
+
+
+    document.getElementById(
+        "ovtitle"
+    ).textContent =
+
+        gameOver
+            ? "SYSTEM FAILURE"
+            : "PAUSED";
+
+}
+
+
+/* =========================================================
+   GAME LOOP
+   ========================================================= */
+
+function gameLoop(time) {
+
+    const delta =
+
+        Math.min(
+
+            0.033,
+
+            (time - lastTime) /
+            1000 || 0
+
+        );
+
+
+    lastTime = time;
+
+
+    update(delta);
+
+    draw();
+
+
+    requestAnimationFrame(
+        gameLoop
+    );
+
+}
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+reset();
+
+requestAnimationFrame(
+    gameLoop
+);
+
+</script>
+
+</body>
+</html>

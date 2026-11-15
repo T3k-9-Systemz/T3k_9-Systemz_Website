@@ -1,0 +1,3835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>T3K_9 Systemz — Galaga</title>
+
+<!-- =========================================================
+     ORBITRON
+     ========================================================= -->
+
+<link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+>
+
+<link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+>
+
+
+<style>
+
+/* =========================================================
+   T3K_9 SYSTEMZ — GLOBAL
+   ========================================================= */
+
+:root {
+    --bg: #02070b;
+    --bg2: #061019;
+    --panel: #07121b;
+    --panel2: #0a1721;
+
+    --cyan: #00d9ff;
+    --blue: #1677ff;
+    --white: #f1f7fb;
+
+    --muted: #6c8798;
+    --muted2: #3d5969;
+
+    --line: #183344;
+    --line-bright: #24566f;
+
+    --red: #ff4058;
+    --yellow: #ffe34d;
+    --green: #35ff9b;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            #0a1925 0%,
+            #03080d 45%,
+            #010305 100%
+        );
+
+    color: var(--white);
+
+    font-family:
+        "Orbitron",
+        monospace;
+}
+
+body {
+    padding: 28px;
+}
+
+button {
+    font-family:
+        "Orbitron",
+        monospace;
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.page {
+    width: min(1500px, 100%);
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.site-header {
+    position: relative;
+
+    min-height: 180px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 20px 36px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(3, 11, 18, .98),
+            rgba(4, 13, 21, .96)
+        );
+
+    border-bottom: 1px solid var(--line);
+
+    box-shadow:
+        inset 0 -1px 0 rgba(0,217,255,.05);
+}
+
+
+/* Technical grid */
+
+.site-header::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(0, 157, 220, .085) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0, 157, 220, .085) 1px,
+            transparent 1px
+        );
+
+    background-size: 48px 48px;
+
+    pointer-events: none;
+}
+
+
+/* Header bottom accent */
+
+.site-header::after {
+    content: "";
+
+    position: absolute;
+
+    left: 36px;
+    right: 36px;
+    bottom: 0;
+
+    height: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--cyan) 0%,
+            var(--blue) 20%,
+            #163447 31%,
+            #163447 100%
+        );
+
+    box-shadow:
+        0 0 12px rgba(0,217,255,.22);
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.brand-logo {
+    position: relative;
+
+    z-index: 3;
+
+    width: 140px;
+    height: 140px;
+
+    object-fit: contain;
+
+    flex-shrink: 0;
+
+    background: #000;
+
+    box-shadow:
+        0 0 0 1px rgba(0,217,255,.08),
+        0 0 22px rgba(0,100,180,.06);
+}
+
+
+/* =========================================================
+   BRAND INFORMATION
+   ========================================================= */
+
+.brand-info {
+    position: relative;
+
+    z-index: 3;
+
+    margin-left: 28px;
+}
+
+
+.brand-name {
+    font-size: 18px;
+
+    font-weight: 500;
+
+    letter-spacing: 7px;
+
+    color: var(--cyan);
+
+    margin-bottom: 14px;
+}
+
+
+.game-title {
+    font-size: 52px;
+
+    line-height: .95;
+
+    font-weight: 800;
+
+    letter-spacing: 5px;
+
+    color: var(--white);
+}
+
+
+.game-subtitle {
+    margin-top: 15px;
+
+    font-size: 12px;
+
+    font-weight: 400;
+
+    letter-spacing: 5px;
+
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   HEADER SYSTEM INFORMATION
+   ========================================================= */
+
+.system-info {
+    position: absolute;
+
+    z-index: 3;
+
+    right: 38px;
+    top: 28px;
+
+    text-align: right;
+
+    font-size: 11px;
+
+    line-height: 2.7;
+
+    letter-spacing: 3px;
+
+    color: #7893a4;
+}
+
+
+/* =========================================================
+   MAIN ARCADE AREA
+   ========================================================= */
+
+.arcade-layout {
+
+    display: grid;
+
+    grid-template-columns:
+        230px
+        minmax(500px, 620px)
+        230px;
+
+    justify-content: center;
+
+    gap: 22px;
+
+    margin-top: 24px;
+}
+
+
+/* =========================================================
+   PANELS
+   ========================================================= */
+
+.panel {
+
+    position: relative;
+
+    padding: 17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(8,20,30,.98),
+            rgba(4,10,16,.98)
+        );
+
+    border: 1px solid var(--line);
+
+    clip-path: polygon(
+        0 0,
+        calc(100% - 12px) 0,
+        100% 12px,
+        100% 100%,
+        12px 100%,
+        0 calc(100% - 12px)
+    );
+}
+
+
+.panel + .panel {
+    margin-top: 16px;
+}
+
+
+.panel-title {
+
+    font-size: 10px;
+
+    letter-spacing: 3px;
+
+    color: var(--cyan);
+
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid var(--line);
+
+    margin-bottom: 15px;
+}
+
+
+/* =========================================================
+   STATISTICS
+   ========================================================= */
+
+.stat {
+    margin-bottom: 17px;
+}
+
+
+.stat-label {
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    color: var(--muted);
+}
+
+
+.stat-value {
+
+    margin-top: 5px;
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: var(--white);
+
+    text-shadow:
+        0 0 10px rgba(0,217,255,.08);
+}
+
+
+.stat-value.cyan {
+    color: var(--cyan);
+}
+
+
+/* =========================================================
+   CONTROL ROWS
+   ========================================================= */
+
+.control {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    padding: 9px 0;
+
+    border-bottom: 1px solid rgba(24,51,68,.55);
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+
+    color: #9bb0bd;
+}
+
+
+.key {
+
+    padding: 5px 7px;
+
+    border: 1px solid #31576c;
+
+    background: #07131d;
+
+    color: var(--cyan);
+
+    font-size: 8px;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   GAME AREA
+   ========================================================= */
+
+.game-column {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+}
+
+
+.game-frame {
+
+    position: relative;
+
+    width: min(100%, 600px);
+
+    aspect-ratio: 3 / 4;
+
+    background: #000;
+
+    border: 1px solid #21485e;
+
+    box-shadow:
+        0 0 0 5px #061019,
+        0 0 40px rgba(0,150,255,.12);
+
+    overflow: hidden;
+
+    clip-path: polygon(
+        0 0,
+        calc(100% - 18px) 0,
+        100% 18px,
+        100% 100%,
+        18px 100%,
+        0 calc(100% - 18px)
+    );
+}
+
+
+canvas {
+
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    background: #000;
+}
+
+
+/* CRT scanlines */
+
+.scanlines {
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255,255,255,.022) 0px,
+            rgba(255,255,255,.022) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+
+    mix-blend-mode: screen;
+
+    opacity: .8;
+}
+
+
+/* =========================================================
+   GAME FOOTER LABEL
+   ========================================================= */
+
+.game-label {
+
+    width: 100%;
+
+    max-width: 600px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 10px;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.arcade-button {
+
+    width: 100%;
+
+    padding: 11px 10px;
+
+    margin-top: 8px;
+
+    background: #07131d;
+
+    border: 1px solid #27536a;
+
+    color: var(--cyan);
+
+    cursor: pointer;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    transition:
+        background .15s ease,
+        border-color .15s ease,
+        box-shadow .15s ease;
+}
+
+
+.arcade-button:hover {
+
+    background: #0a202e;
+
+    border-color: var(--cyan);
+
+    box-shadow:
+        0 0 12px rgba(0,217,255,.10);
+}
+
+
+/* =========================================================
+   STATUS LIGHT
+   ========================================================= */
+
+.status-light {
+
+    display: inline-block;
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    margin-right: 7px;
+
+    background: var(--green);
+
+    box-shadow:
+        0 0 8px var(--green);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+    .arcade-layout {
+
+        grid-template-columns:
+            1fr;
+
+        max-width: 640px;
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .left-panel,
+    .right-panel {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 14px;
+    }
+
+    .panel + .panel {
+        margin-top: 0;
+    }
+
+    .game-column {
+        grid-row: 1;
+    }
+
+    .system-info {
+        display: none;
+    }
+}
+
+
+@media (max-width: 650px) {
+
+    body {
+        padding: 12px;
+    }
+
+    .site-header {
+        min-height: 125px;
+
+        padding: 15px;
+    }
+
+    .brand-logo {
+
+        width: 90px;
+        height: 90px;
+    }
+
+    .brand-info {
+        margin-left: 16px;
+    }
+
+    .brand-name {
+        font-size: 10px;
+        letter-spacing: 3px;
+    }
+
+    .game-title {
+        font-size: 30px;
+        letter-spacing: 3px;
+    }
+
+    .game-subtitle {
+        font-size: 7px;
+        letter-spacing: 2px;
+    }
+
+    .left-panel,
+    .right-panel {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+
+<link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png">
+<link rel="shortcut icon" href="../assets/favicon.ico">
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+
+<header class="site-header">
+
+    <!-- Actual T3K_9 logo is inserted by JavaScript below -->
+    <img
+        id="brandLogo"
+        class="brand-logo"
+        alt="T3K_9 Systemz"
+    >
+
+    <div class="brand-info">
+
+        <div class="brand-name">
+            T3K_9 // SYSTEMZ
+        </div>
+
+        <div class="game-title">
+            GALAGA
+        </div>
+
+        <div class="game-subtitle">
+            ARCADE MODULE // ENGINEERING EDITION
+        </div>
+
+    </div>
+
+
+    <div class="system-info">
+
+        <div>
+            SYSTEM STATUS // <span style="color:#35ff9b;">ONLINE</span>
+        </div>
+
+        <div>
+            CORE // GALAGA
+        </div>
+
+        <div>
+            BUILD // 01.00
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     ARCADE
+     ========================================================= -->
+
+<div class="arcade-layout">
+
+
+    <!-- =====================================================
+         LEFT INFORMATION
+         ===================================================== -->
+
+    <aside class="left-panel">
+
+
+        <section class="panel">
+
+            <div class="panel-title">
+                GAME DATA
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    SCORE
+                </div>
+
+                <div
+                    id="score"
+                    class="stat-value cyan"
+                >
+                    000000
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    HIGH SCORE
+                </div>
+
+                <div
+                    id="highScore"
+                    class="stat-value"
+                >
+                    000000
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    STAGE
+                </div>
+
+                <div
+                    id="stage"
+                    class="stat-value"
+                >
+                    01
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    LIVES
+                </div>
+
+                <div
+                    id="lives"
+                    class="stat-value"
+                >
+                    03
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="panel">
+
+            <div class="panel-title">
+                FIGHTER STATUS
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    FORMATION
+                </div>
+
+                <div
+                    id="formationStatus"
+                    class="stat-value"
+                    style="font-size:13px;"
+                >
+                    READY
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    FIGHTER MODE
+                </div>
+
+                <div
+                    id="fighterMode"
+                    class="stat-value"
+                    style="font-size:13px;"
+                >
+                    SINGLE
+                </div>
+
+            </div>
+
+        </section>
+
+    </aside>
+
+
+    <!-- =====================================================
+         GAME
+         ===================================================== -->
+
+    <main class="game-column">
+
+        <div class="game-frame">
+
+            <canvas
+                id="gameCanvas"
+                width="450"
+                height="600"
+            ></canvas>
+
+            <div class="scanlines"></div>
+
+        </div>
+
+
+        <div class="game-label">
+
+            <span>
+                ARC-008 // GALAGA
+            </span>
+
+            <span id="gameStatusLabel">
+                SYSTEM READY
+            </span>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         RIGHT INFORMATION
+         ===================================================== -->
+
+    <aside class="right-panel">
+
+
+        <section class="panel">
+
+            <div class="panel-title">
+                CONTROLS
+            </div>
+
+
+            <div class="control">
+
+                <span>
+                    MOVE
+                </span>
+
+                <span class="key">
+                    ← →
+                </span>
+
+            </div>
+
+
+            <div class="control">
+
+                <span>
+                    FIRE
+                </span>
+
+                <span class="key">
+                    SPACE
+                </span>
+
+            </div>
+
+
+            <div class="control">
+
+                <span>
+                    PAUSE
+                </span>
+
+                <span class="key">
+                    P
+                </span>
+
+            </div>
+
+
+            <div class="control">
+
+                <span>
+                    RESTART
+                </span>
+
+                <span class="key">
+                    R
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <section class="panel">
+
+            <div class="panel-title">
+                SYSTEM CONTROL
+            </div>
+
+
+            <button
+                id="startButton"
+                class="arcade-button"
+            >
+                START GAME
+            </button>
+
+
+            <button
+                id="pauseButton"
+                class="arcade-button"
+            >
+                PAUSE
+            </button>
+
+        </section>
+
+
+        <section class="panel">
+
+            <div class="panel-title">
+                SCORING
+            </div>
+
+
+            <div class="control">
+                <span>DRONE</span>
+                <span>50</span>
+            </div>
+
+
+            <div class="control">
+                <span>BUTTERFLY</span>
+                <span>80</span>
+            </div>
+
+
+            <div class="control">
+                <span>BOSS</span>
+                <span>150</span>
+            </div>
+
+
+            <div class="control">
+                <span>DUAL FIGHTER</span>
+                <span>×2</span>
+            </div>
+
+        </section>
+
+    </aside>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   T3K_9 SYSTEMZ — GALAGA
+   ========================================================= */
+
+
+/* =========================================================
+   EMBEDDED T3K_9 LOGO
+   =========================================================
+
+   This is the user's actual uploaded T3K_9 Systemz logo,
+   resized/compressed for use directly inside this HTML file.
+   ========================================================= */
+
+const logoData =
+"data:image/jpeg;base64,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";
+
+document.getElementById("brandLogo").src = logoData;
+
+
+/* =========================================================
+   CANVAS
+   ========================================================= */
+
+const canvas =
+    document.getElementById("gameCanvas");
+
+const ctx =
+    canvas.getContext("2d");
+
+const W = canvas.width;
+const H = canvas.height;
+
+
+/* =========================================================
+   UI
+   ========================================================= */
+
+const scoreEl =
+    document.getElementById("score");
+
+const highScoreEl =
+    document.getElementById("highScore");
+
+const stageEl =
+    document.getElementById("stage");
+
+const livesEl =
+    document.getElementById("lives");
+
+const formationStatusEl =
+    document.getElementById("formationStatus");
+
+const fighterModeEl =
+    document.getElementById("fighterMode");
+
+const gameStatusLabel =
+    document.getElementById("gameStatusLabel");
+
+const startButton =
+    document.getElementById("startButton");
+
+const pauseButton =
+    document.getElementById("pauseButton");
+
+
+/* =========================================================
+   HIGH SCORE
+   ========================================================= */
+
+let highScore =
+    Number(
+        localStorage.getItem(
+            "t3k9-galaga-highscore"
+        ) || 0
+    );
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+const keys = {};
+
+window.addEventListener(
+    "keydown",
+    e => {
+
+        keys[e.code] = true;
+
+        if (
+            e.code === "ArrowLeft" ||
+            e.code === "ArrowRight" ||
+            e.code === "Space"
+        ) {
+            e.preventDefault();
+        }
+
+        if (e.code === "KeyP") {
+            togglePause();
+        }
+
+        if (e.code === "KeyR") {
+            resetGame();
+            startGame();
+        }
+
+        if (
+            e.code === "Enter" &&
+            !gameRunning
+        ) {
+            startGame();
+        }
+
+    }
+);
+
+
+window.addEventListener(
+    "keyup",
+    e => {
+        keys[e.code] = false;
+    }
+);
+
+
+/* =========================================================
+   GAME STATE
+   ========================================================= */
+
+let gameRunning = false;
+let paused = false;
+let gameOver = false;
+
+let score = 0;
+let stage = 1;
+let lives = 3;
+
+let stageState = "ready";
+let stageTimer = 0;
+
+let lastTime = 0;
+let elapsed = 0;
+
+
+/* =========================================================
+   PLAYER
+   ========================================================= */
+
+const player = {
+
+    x: W / 2,
+
+    y: H - 54,
+
+    width: 28,
+
+    height: 31,
+
+    speed: 270,
+
+    vx: 0,
+
+    fireCooldown: 0,
+
+    invulnerable: 0,
+
+    dual: false,
+
+    captured: false
+
+};
+
+
+/* =========================================================
+   OBJECT ARRAYS
+   ========================================================= */
+
+let playerShots = [];
+let enemyShots = [];
+
+let enemies = [];
+let divers = [];
+
+let particles = [];
+
+
+/* =========================================================
+   STARFIELD
+   ========================================================= */
+
+const stars = [];
+
+for (let i = 0; i < 110; i++) {
+
+    stars.push({
+
+        x: Math.random() * W,
+
+        y: Math.random() * H,
+
+        speed:
+            10 + Math.random() * 38,
+
+        size:
+            Math.random() < .86
+                ? 1
+                : 2
+
+    });
+
+}
+
+
+/* =========================================================
+   ENEMY DEFINITIONS
+   ========================================================= */
+
+const enemyTypes = {
+
+    drone: {
+
+        width: 22,
+
+        height: 18,
+
+        points: 50,
+
+        color: "#1aa8ff"
+
+    },
+
+    butterfly: {
+
+        width: 25,
+
+        height: 22,
+
+        points: 80,
+
+        color: "#d52cff"
+
+    },
+
+    boss: {
+
+        width: 31,
+
+        height: 27,
+
+        points: 150,
+
+        color: "#ff4058"
+
+    }
+
+};
+
+
+/* =========================================================
+   UTILITIES
+   ========================================================= */
+
+function clamp(
+    value,
+    min,
+    max
+) {
+
+    return Math.max(
+        min,
+        Math.min(max, value)
+    );
+
+}
+
+
+function random(
+    min,
+    max
+) {
+
+    return (
+        Math.random() *
+        (max - min)
+    ) + min;
+
+}
+
+
+/* =========================================================
+   UI UPDATE
+   ========================================================= */
+
+function updateUI() {
+
+    scoreEl.textContent =
+        String(score).padStart(
+            6,
+            "0"
+        );
+
+    highScoreEl.textContent =
+        String(highScore).padStart(
+            6,
+            "0"
+        );
+
+    stageEl.textContent =
+        String(stage).padStart(
+            2,
+            "0"
+        );
+
+    livesEl.textContent =
+        String(
+            Math.max(0, lives)
+        ).padStart(
+            2,
+            "0"
+        );
+
+    fighterModeEl.textContent =
+        player.dual
+            ? "DUAL"
+            : "SINGLE";
+
+}
+
+
+/* =========================================================
+   SCORE
+   ========================================================= */
+
+function addScore(amount) {
+
+    score += amount;
+
+    if (score > highScore) {
+
+        highScore = score;
+
+        localStorage.setItem(
+            "t3k9-galaga-highscore",
+            String(highScore)
+        );
+
+    }
+
+    updateUI();
+
+}
+
+
+/* =========================================================
+   CREATE ENEMY FORMATION
+   ========================================================= */
+
+function createFormation() {
+
+    enemies = [];
+
+    const cols = 8;
+    const rows = 5;
+
+    const spacingX = 45;
+    const spacingY = 38;
+
+    const startX =
+        W / 2 -
+        ((cols - 1) * spacingX) / 2;
+
+    const startY = 105;
+
+
+    for (
+        let row = 0;
+        row < rows;
+        row++
+    ) {
+
+        for (
+            let col = 0;
+            col < cols;
+            col++
+        ) {
+
+            let type;
+
+            if (row === 0) {
+
+                type = "boss";
+
+            } else if (
+                row === 1 ||
+                row === 2
+            ) {
+
+                type = "butterfly";
+
+            } else {
+
+                type = "drone";
+
+            }
+
+
+            enemies.push({
+
+                type,
+
+                x: startX +
+                   col * spacingX,
+
+                y: -90 -
+                   col * 15 -
+                   row * 8,
+
+                targetX:
+                    startX +
+                    col * spacingX,
+
+                targetY:
+                    startY +
+                    row * spacingY,
+
+                state: "entering",
+
+                entry: 0,
+
+                dead: false,
+
+                phase:
+                    Math.random() *
+                    Math.PI * 2,
+
+                attackTimer:
+                    random(
+                        1.5,
+                        4.5
+                    ),
+
+                diveSide:
+                    Math.random() <
+                    .5
+                        ? -1
+                        : 1
+
+            });
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   FORMATION MOTION
+   ========================================================= */
+
+let formationOffset = 0;
+
+let formationDirection = 1;
+
+
+function updateFormation(dt) {
+
+    if (
+        stageState !==
+        "playing"
+    ) {
+        return;
+    }
+
+
+    formationOffset +=
+        formationDirection *
+        (22 + stage * 2) *
+        dt;
+
+
+    if (
+        formationOffset > 55
+    ) {
+
+        formationOffset = 55;
+
+        formationDirection = -1;
+
+    }
+
+
+    if (
+        formationOffset < -55
+    ) {
+
+        formationOffset = -55;
+
+        formationDirection = 1;
+
+    }
+
+
+    for (
+        const enemy of enemies
+    ) {
+
+        if (
+            enemy.dead ||
+            enemy.state !==
+            "formation"
+        ) {
+            continue;
+        }
+
+
+        enemy.x += (
+            enemy.targetX +
+            formationOffset -
+            enemy.x
+        ) * 7 * dt;
+
+
+        enemy.y += (
+            enemy.targetY -
+            enemy.y
+        ) * 7 * dt;
+
+
+        enemy.attackTimer -= dt;
+
+
+        if (
+            enemy.attackTimer <= 0
+        ) {
+
+            const chance =
+                .22 +
+                Math.min(
+                    .35,
+                    stage * .025
+                );
+
+
+            if (
+                Math.random() <
+                chance
+            ) {
+
+                startDive(enemy);
+
+            }
+
+
+            enemy.attackTimer =
+                random(
+                    1.8,
+                    Math.max(
+                        2.8,
+                        5 -
+                        stage * .08
+                    )
+                );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   START ENEMY DIVE
+   ========================================================= */
+
+function startDive(enemy) {
+
+    if (
+        enemy.state !==
+        "formation"
+    ) {
+        return;
+    }
+
+
+    enemy.state =
+        "diving";
+
+
+    divers.push({
+
+        enemy,
+
+        startX:
+            enemy.x,
+
+        startY:
+            enemy.y,
+
+        progress: 0,
+
+        side:
+            enemy.diveSide,
+
+        phase:
+            Math.random() *
+            Math.PI * 2,
+
+        speed:
+            .24 +
+            Math.min(
+                .12,
+                stage * .008
+            )
+
+    });
+
+}
+
+
+/* =========================================================
+   UPDATE DIVING ENEMIES
+   ========================================================= */
+
+function updateDivers(dt) {
+
+    for (
+        let i = divers.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const dive =
+            divers[i];
+
+        const enemy =
+            dive.enemy;
+
+
+        if (enemy.dead) {
+
+            divers.splice(i, 1);
+
+            continue;
+
+        }
+
+
+        dive.progress +=
+            dive.speed * dt;
+
+
+        const p =
+            dive.progress;
+
+
+        /*
+         * Galaga-like swooping arc:
+         *
+         * first move outward,
+         * curve through the lower field,
+         * then leave the screen.
+         */
+
+        enemy.x =
+            dive.startX +
+            Math.sin(
+                p * Math.PI * 2.5 +
+                dive.phase
+            ) *
+            (95 + stage * 3) *
+            dive.side;
+
+
+        enemy.y =
+            dive.startY +
+            p * 470;
+
+
+        /*
+         * Enemy fires during attacks.
+         */
+
+        if (
+            Math.random() <
+            (.018 +
+             stage * .0015) *
+            dt * 60
+        ) {
+
+            fireEnemyShot(
+                enemy.x,
+                enemy.y
+            );
+
+        }
+
+
+        if (
+            enemy.y >
+            H + 45
+        ) {
+
+            enemy.state =
+                "returning";
+
+            divers.splice(
+                i,
+                1
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   RETURNING ENEMIES
+   ========================================================= */
+
+function updateReturning(dt) {
+
+    for (
+        const enemy of enemies
+    ) {
+
+        if (
+            enemy.dead ||
+            enemy.state !==
+            "returning"
+        ) {
+            continue;
+        }
+
+
+        enemy.x += (
+            enemy.targetX +
+            formationOffset -
+            enemy.x
+        ) * 2.8 * dt;
+
+
+        enemy.y += (
+            enemy.targetY -
+            enemy.y
+        ) * 2.8 * dt;
+
+
+        if (
+            Math.abs(
+                enemy.x -
+                (
+                    enemy.targetX +
+                    formationOffset
+                )
+            ) < 2
+            &&
+            Math.abs(
+                enemy.y -
+                enemy.targetY
+            ) < 2
+        ) {
+
+            enemy.state =
+                "formation";
+
+            enemy.attackTimer =
+                random(
+                    2,
+                    5
+                );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   ENEMY FIRE
+   ========================================================= */
+
+function enemyFire(dt) {
+
+    if (
+        stageState !==
+        "playing"
+    ) {
+        return;
+    }
+
+
+    const formationEnemies =
+        enemies.filter(
+            enemy =>
+                !enemy.dead &&
+                enemy.state ===
+                "formation"
+        );
+
+
+    if (
+        formationEnemies.length === 0
+    ) {
+        return;
+    }
+
+
+    if (
+        Math.random() <
+        (
+            .0035 +
+            stage * .00035
+        ) *
+        dt *
+        60
+    ) {
+
+        const enemy =
+            formationEnemies[
+                Math.floor(
+                    Math.random() *
+                    formationEnemies.length
+                )
+            ];
+
+
+        fireEnemyShot(
+            enemy.x,
+            enemy.y + 10
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   FIRE ENEMY SHOT
+   ========================================================= */
+
+function fireEnemyShot(
+    x,
+    y
+) {
+
+    const dx =
+        player.x - x;
+
+    const dy =
+        player.y - y;
+
+    const length =
+        Math.hypot(
+            dx,
+            dy
+        ) || 1;
+
+
+    const speed =
+        125 +
+        stage * 8;
+
+
+    enemyShots.push({
+
+        x,
+
+        y,
+
+        vx:
+            dx /
+            length *
+            speed,
+
+        vy:
+            dy /
+            length *
+            speed,
+
+        radius: 2.2
+
+    });
+
+}
+
+
+/* =========================================================
+   PLAYER UPDATE
+   ========================================================= */
+
+function updatePlayer(dt) {
+
+    let direction = 0;
+
+
+    if (
+        keys.ArrowLeft
+    ) {
+        direction--;
+    }
+
+
+    if (
+        keys.ArrowRight
+    ) {
+        direction++;
+    }
+
+
+    player.vx =
+        direction *
+        player.speed;
+
+
+    player.x +=
+        player.vx * dt;
+
+
+    player.x =
+        clamp(
+            player.x,
+            20,
+            W - 20
+        );
+
+
+    player.fireCooldown -= dt;
+
+
+    if (
+        keys.Space &&
+        player.fireCooldown <= 0
+    ) {
+
+        firePlayer();
+
+        /*
+         * Galaga-style rapid but controlled
+         * firing.
+         */
+
+        player.fireCooldown =
+            player.dual
+                ? .20
+                : .24;
+
+    }
+
+
+    if (
+        player.invulnerable > 0
+    ) {
+
+        player.invulnerable -= dt;
+
+    }
+
+}
+
+
+/* =========================================================
+   PLAYER FIRE
+   ========================================================= */
+
+function firePlayer() {
+
+    if (
+        player.dual
+    ) {
+
+        playerShots.push({
+
+            x:
+                player.x - 8,
+
+            y:
+                player.y - 16,
+
+            vx: 0,
+
+            vy: -510,
+
+            radius: 2
+
+        });
+
+
+        playerShots.push({
+
+            x:
+                player.x + 8,
+
+            y:
+                player.y - 16,
+
+            vx: 0,
+
+            vy: -510,
+
+            radius: 2
+
+        });
+
+    } else {
+
+        playerShots.push({
+
+            x:
+                player.x,
+
+            y:
+                player.y - 17,
+
+            vx: 0,
+
+            vy: -510,
+
+            radius: 2
+
+        });
+
+    }
+
+}
+
+
+/* =========================================================
+   BULLET UPDATE
+   ========================================================= */
+
+function updateShots(dt) {
+
+    for (
+        let i =
+            playerShots.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const shot =
+            playerShots[i];
+
+
+        shot.x +=
+            shot.vx * dt;
+
+        shot.y +=
+            shot.vy * dt;
+
+
+        if (
+            shot.y < -20
+        ) {
+
+            playerShots.splice(
+                i,
+                1
+            );
+
+        }
+
+    }
+
+
+    for (
+        let i =
+            enemyShots.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const shot =
+            enemyShots[i];
+
+
+        shot.x +=
+            shot.vx * dt;
+
+        shot.y +=
+            shot.vy * dt;
+
+
+        if (
+            shot.y > H + 30 ||
+            shot.x < -30 ||
+            shot.x > W + 30
+        ) {
+
+            enemyShots.splice(
+                i,
+                1
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   COLLISION DETECTION
+   ========================================================= */
+
+function hitTest(
+    a,
+    b,
+    width,
+    height
+) {
+
+    return (
+        Math.abs(
+            a.x - b.x
+        ) <
+        width
+        &&
+        Math.abs(
+            a.y - b.y
+        ) <
+        height
+    );
+
+}
+
+
+/* =========================================================
+   CHECK COLLISIONS
+   ========================================================= */
+
+function checkCollisions() {
+
+
+    /* -----------------------------------------------------
+       PLAYER SHOTS -> ENEMIES
+       ----------------------------------------------------- */
+
+    for (
+        let i =
+            playerShots.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const shot =
+            playerShots[i];
+
+
+        let hit =
+            false;
+
+
+        for (
+            const enemy of enemies
+        ) {
+
+            if (
+                enemy.dead ||
+                enemy.state ===
+                "entering"
+            ) {
+                continue;
+            }
+
+
+            const def =
+                enemyTypes[
+                    enemy.type
+                ];
+
+
+            if (
+                hitTest(
+                    shot,
+                    enemy,
+                    def.width * .65,
+                    def.height * .65
+                )
+            ) {
+
+                enemy.dead = true;
+
+                hit = true;
+
+
+                let points =
+                    def.points;
+
+
+                /*
+                 * Dual fighter awards more
+                 * scoring value.
+                 */
+
+                if (
+                    player.dual
+                ) {
+                    points *= 2;
+                }
+
+
+                addScore(points);
+
+
+                createExplosion(
+                    enemy.x,
+                    enemy.y,
+                    enemy.type
+                );
+
+
+                break;
+
+            }
+
+        }
+
+
+        if (hit) {
+
+            playerShots.splice(
+                i,
+                1
+            );
+
+        }
+
+    }
+
+
+    /* -----------------------------------------------------
+       ENEMY SHOTS -> PLAYER
+       ----------------------------------------------------- */
+
+    if (
+        player.invulnerable <= 0
+    ) {
+
+        for (
+            let i =
+                enemyShots.length - 1;
+            i >= 0;
+            i--
+        ) {
+
+            const shot =
+                enemyShots[i];
+
+
+            if (
+                hitTest(
+                    shot,
+                    player,
+                    15,
+                    18
+                )
+            ) {
+
+                enemyShots.splice(
+                    i,
+                    1
+                );
+
+
+                destroyPlayer();
+
+                break;
+
+            }
+
+        }
+
+    }
+
+
+    /* -----------------------------------------------------
+       DIVING ENEMIES -> PLAYER
+       ----------------------------------------------------- */
+
+    if (
+        player.invulnerable <= 0
+    ) {
+
+        for (
+            const dive of divers
+        ) {
+
+            if (
+                hitTest(
+                    dive.enemy,
+                    player,
+                    17,
+                    20
+                )
+            ) {
+
+                dive.enemy.dead =
+                    true;
+
+                destroyPlayer();
+
+                break;
+
+            }
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   PLAYER DESTRUCTION
+   ========================================================= */
+
+function destroyPlayer() {
+
+    if (
+        player.invulnerable > 0
+    ) {
+        return;
+    }
+
+
+    createExplosion(
+        player.x,
+        player.y,
+        "player"
+    );
+
+
+    lives--;
+
+
+    player.x =
+        W / 2;
+
+
+    player.invulnerable =
+        2.2;
+
+
+    playerShots = [];
+
+    enemyShots = [];
+
+
+    updateUI();
+
+
+    if (
+        lives <= 0
+    ) {
+
+        endGame();
+
+    }
+
+}
+
+
+/* =========================================================
+   EXPLOSIONS
+   ========================================================= */
+
+function createExplosion(
+    x,
+    y,
+    type
+) {
+
+    const count =
+        type === "player"
+            ? 34
+            : 20;
+
+
+    for (
+        let i = 0;
+        i < count;
+        i++
+    ) {
+
+        const angle =
+            Math.random() *
+            Math.PI *
+            2;
+
+
+        const speed =
+            random(
+                35,
+                type === "player"
+                    ? 170
+                    : 125
+            );
+
+
+        particles.push({
+
+            x,
+
+            y,
+
+            vx:
+                Math.cos(angle) *
+                speed,
+
+            vy:
+                Math.sin(angle) *
+                speed,
+
+            life:
+                random(
+                    .25,
+                    .75
+                ),
+
+            maxLife:
+                .75,
+
+            size:
+                random(
+                    1,
+                    type === "player"
+                        ? 4
+                        : 3
+                )
+
+        });
+
+    }
+
+}
+
+
+/* =========================================================
+   PARTICLES
+   ========================================================= */
+
+function updateParticles(dt) {
+
+    for (
+        let i =
+            particles.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const p =
+            particles[i];
+
+
+        p.x +=
+            p.vx * dt;
+
+        p.y +=
+            p.vy * dt;
+
+
+        p.vx *=
+            Math.pow(
+                .08,
+                dt
+            );
+
+
+        p.vy *=
+            Math.pow(
+                .08,
+                dt
+            );
+
+
+        p.life -= dt;
+
+
+        if (
+            p.life <= 0
+        ) {
+
+            particles.splice(
+                i,
+                1
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   STAGE LOGIC
+   ========================================================= */
+
+function updateStage(dt) {
+
+    /* -----------------------------------------------------
+       READY
+       ----------------------------------------------------- */
+
+    if (
+        stageState === "ready"
+    ) {
+
+        stageTimer -= dt;
+
+
+        if (
+            stageTimer <= 0
+        ) {
+
+            createFormation();
+
+            stageState =
+                "entering";
+
+
+            formationStatusEl.textContent =
+                "INCOMING";
+
+
+            gameStatusLabel.textContent =
+                "FORMATION ENTRY";
+
+        }
+
+    }
+
+
+    /* -----------------------------------------------------
+       FORMATION ENTRY
+       ----------------------------------------------------- */
+
+    else if (
+        stageState ===
+        "entering"
+    ) {
+
+        let complete =
+            true;
+
+
+        for (
+            const enemy of enemies
+        ) {
+
+            enemy.entry +=
+                dt * (
+                    .75 +
+                    stage * .015
+                );
+
+
+            const t =
+                clamp(
+                    enemy.entry,
+                    0,
+                    1
+                );
+
+
+            /*
+             * Smooth easing.
+             */
+
+            const eased =
+                t * t *
+                (3 - 2 * t);
+
+
+            /*
+             * Curved entrance path.
+             */
+
+            const arc =
+                Math.sin(
+                    t *
+                    Math.PI *
+                    2
+                ) *
+                90;
+
+
+            enemy.x =
+                enemy.targetX +
+                arc *
+                (
+                    enemy.targetX <
+                    W / 2
+                        ? -1
+                        : 1
+                ) *
+                (1 - eased);
+
+
+            enemy.y =
+                -60 +
+                (
+                    enemy.targetY +
+                    60
+                ) *
+                eased;
+
+
+            if (
+                t < 1
+            ) {
+
+                complete =
+                    false;
+
+            } else {
+
+                enemy.state =
+                    "formation";
+
+            }
+
+        }
+
+
+        if (
+            complete
+        ) {
+
+            stageState =
+                "playing";
+
+
+            formationStatusEl.textContent =
+                "ACTIVE";
+
+
+            gameStatusLabel.textContent =
+                "COMBAT ACTIVE";
+
+        }
+
+    }
+
+
+    /* -----------------------------------------------------
+       ACTIVE STAGE
+       ----------------------------------------------------- */
+
+    else if (
+        stageState ===
+        "playing"
+    ) {
+
+        const remaining =
+            enemies.filter(
+                enemy =>
+                    !enemy.dead
+            );
+
+
+        if (
+            remaining.length === 0
+        ) {
+
+            finishStage();
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   STAGE COMPLETE
+   ========================================================= */
+
+function finishStage() {
+
+    addScore(
+        500 +
+        stage * 100
+    );
+
+
+    stage++;
+
+
+    stageState =
+        "ready";
+
+
+    stageTimer =
+        1.8;
+
+
+    enemies = [];
+
+    divers = [];
+
+    playerShots = [];
+
+    enemyShots = [];
+
+
+    formationStatusEl.textContent =
+        "CLEARED";
+
+
+    gameStatusLabel.textContent =
+        "STAGE COMPLETE";
+
+
+    updateUI();
+
+}
+
+
+/* =========================================================
+   DRAW STARFIELD
+   ========================================================= */
+
+function drawStars(dt) {
+
+    ctx.fillStyle =
+        "#000";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    for (
+        const star of stars
+    ) {
+
+        star.y +=
+            star.speed * dt;
+
+
+        if (
+            star.y > H
+        ) {
+
+            star.y = 0;
+
+            star.x =
+                Math.random() * W;
+
+        }
+
+
+        ctx.fillStyle =
+            star.size === 1
+                ? "#294455"
+                : "#7895a6";
+
+
+        ctx.fillRect(
+            star.x,
+            star.y,
+            star.size,
+            star.size
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DRAW PLAYER
+   ========================================================= */
+
+function drawPlayer() {
+
+    if (
+        player.invulnerable > 0 &&
+        Math.floor(
+            player.invulnerable * 10
+        ) % 2 === 0
+    ) {
+        return;
+    }
+
+
+    ctx.save();
+
+
+    ctx.translate(
+        player.x,
+        player.y
+    );
+
+
+    ctx.shadowBlur =
+        14;
+
+    ctx.shadowColor =
+        "#00d9ff";
+
+
+    /*
+     * Main ship.
+     */
+
+    ctx.fillStyle =
+        "#00d9ff";
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        0,
+        -19
+    );
+
+    ctx.lineTo(
+        -16,
+        14
+    );
+
+    ctx.lineTo(
+        -5,
+        10
+    );
+
+    ctx.lineTo(
+        0,
+        17
+    );
+
+    ctx.lineTo(
+        5,
+        10
+    );
+
+    ctx.lineTo(
+        16,
+        14
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    /*
+     * Cockpit.
+     */
+
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle =
+        "#e9fcff";
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        0,
+        -12
+    );
+
+    ctx.lineTo(
+        -5,
+        7
+    );
+
+    ctx.lineTo(
+        5,
+        7
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    /*
+     * Dual fighter indicator.
+     */
+
+    if (
+        player.dual
+    ) {
+
+        ctx.strokeStyle =
+            "#1677ff";
+
+        ctx.lineWidth = 2;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            -17,
+            5
+        );
+
+        ctx.lineTo(
+            -23,
+            12
+        );
+
+        ctx.moveTo(
+            17,
+            5
+        );
+
+        ctx.lineTo(
+            23,
+            12
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   DRAW ENEMY
+   ========================================================= */
+
+function drawEnemy(enemy) {
+
+    if (
+        enemy.dead
+    ) {
+        return;
+    }
+
+
+    ctx.save();
+
+
+    ctx.translate(
+        enemy.x,
+        enemy.y
+    );
+
+
+    /*
+     * Drone
+     */
+
+    if (
+        enemy.type ===
+        "drone"
+    ) {
+
+        ctx.shadowBlur =
+            10;
+
+        ctx.shadowColor =
+            "#169dff";
+
+        ctx.fillStyle =
+            "#168ed0";
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            -13,
+            -6
+        );
+
+        ctx.lineTo(
+            -5,
+            -12
+        );
+
+        ctx.lineTo(
+            0,
+            -8
+        );
+
+        ctx.lineTo(
+            5,
+            -12
+        );
+
+        ctx.lineTo(
+            13,
+            -6
+        );
+
+        ctx.lineTo(
+            9,
+            10
+        );
+
+        ctx.lineTo(
+            0,
+            5
+        );
+
+        ctx.lineTo(
+            -9,
+            10
+        );
+
+        ctx.closePath();
+
+        ctx.fill();
+
+
+        ctx.fillStyle =
+            "#d7faff";
+
+        ctx.fillRect(
+            -3,
+            -2,
+            6,
+            4
+        );
+
+    }
+
+
+    /*
+     * Butterfly
+     */
+
+    else if (
+        enemy.type ===
+        "butterfly"
+    ) {
+
+        ctx.shadowBlur =
+            11;
+
+        ctx.shadowColor =
+            "#d52cff";
+
+        ctx.fillStyle =
+            "#c62be8";
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            0,
+            -13
+        );
+
+        ctx.bezierCurveTo(
+            -19,
+            -10,
+            -17,
+            11,
+            0,
+            7
+        );
+
+        ctx.bezierCurveTo(
+            17,
+            11,
+            19,
+            -10,
+            0,
+            -13
+        );
+
+        ctx.fill();
+
+
+        ctx.fillStyle =
+            "#f7c7ff";
+
+        ctx.fillRect(
+            -2,
+            -3,
+            4,
+            8
+        );
+
+    }
+
+
+    /*
+     * Boss
+     */
+
+    else {
+
+        ctx.shadowBlur =
+            12;
+
+        ctx.shadowColor =
+            "#ff4058";
+
+        ctx.fillStyle =
+            "#e43d55";
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            0,
+            -16
+        );
+
+        ctx.lineTo(
+            -18,
+            -7
+        );
+
+        ctx.lineTo(
+            -14,
+            10
+        );
+
+        ctx.lineTo(
+            -5,
+            6
+        );
+
+        ctx.lineTo(
+            0,
+            12
+        );
+
+        ctx.lineTo(
+            5,
+            6
+        );
+
+        ctx.lineTo(
+            14,
+            10
+        );
+
+        ctx.lineTo(
+            18,
+            -7
+        );
+
+        ctx.closePath();
+
+        ctx.fill();
+
+
+        ctx.fillStyle =
+            "#fff0f2";
+
+        ctx.fillRect(
+            -4,
+            -3,
+            8,
+            5
+        );
+
+    }
+
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   DRAW SHOTS
+   ========================================================= */
+
+function drawShots() {
+
+    /*
+     * Player shots
+     */
+
+    ctx.shadowBlur =
+        9;
+
+    ctx.shadowColor =
+        "#00d9ff";
+
+    ctx.fillStyle =
+        "#d8fbff";
+
+
+    for (
+        const shot of playerShots
+    ) {
+
+        ctx.fillRect(
+            shot.x - 1,
+            shot.y - 6,
+            2,
+            12
+        );
+
+    }
+
+
+    /*
+     * Enemy shots
+     */
+
+    ctx.shadowColor =
+        "#ff4058";
+
+    ctx.fillStyle =
+        "#ff7585";
+
+
+    for (
+        const shot of enemyShots
+    ) {
+
+        ctx.beginPath();
+
+        ctx.arc(
+            shot.x,
+            shot.y,
+            shot.radius,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+    }
+
+
+    ctx.shadowBlur = 0;
+
+}
+
+
+/* =========================================================
+   DRAW PARTICLES
+   ========================================================= */
+
+function drawParticles() {
+
+    for (
+        const p of particles
+    ) {
+
+        ctx.globalAlpha =
+            p.life /
+            p.maxLife;
+
+
+        ctx.fillStyle =
+            "#00d9ff";
+
+
+        ctx.fillRect(
+            p.x,
+            p.y,
+            p.size,
+            p.size
+        );
+
+    }
+
+
+    ctx.globalAlpha = 1;
+
+}
+
+
+/* =========================================================
+   MESSAGE
+   ========================================================= */
+
+function drawMessage(
+    title,
+    subtitle
+) {
+
+    ctx.save();
+
+
+    ctx.textAlign =
+        "center";
+
+
+    ctx.shadowBlur =
+        14;
+
+    ctx.shadowColor =
+        "#00d9ff";
+
+
+    ctx.fillStyle =
+        "#00d9ff";
+
+
+    ctx.font =
+        "800 25px Orbitron, monospace";
+
+
+    ctx.fillText(
+        title,
+        W / 2,
+        H / 2 - 12
+    );
+
+
+    ctx.shadowBlur = 0;
+
+
+    ctx.fillStyle =
+        "#6d8999";
+
+
+    ctx.font =
+        "500 9px Orbitron, monospace";
+
+
+    ctx.fillText(
+        subtitle,
+        W / 2,
+        H / 2 + 18
+    );
+
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   DRAW
+   ========================================================= */
+
+function draw(dt) {
+
+    drawStars(dt);
+
+
+    /*
+     * Enemies
+     */
+
+    for (
+        const enemy of enemies
+    ) {
+
+        drawEnemy(enemy);
+
+    }
+
+
+    /*
+     * Player
+     */
+
+    drawPlayer();
+
+
+    /*
+     * Projectiles
+     */
+
+    drawShots();
+
+
+    /*
+     * Explosions
+     */
+
+    drawParticles();
+
+
+    /*
+     * Overlay states
+     */
+
+    if (
+        !gameRunning
+    ) {
+
+        drawMessage(
+            "T3K_9 GALAGA",
+            "PRESS ENTER OR START GAME"
+        );
+
+    }
+
+
+    else if (
+        paused
+    ) {
+
+        drawMessage(
+            "PAUSED",
+            "PRESS P TO RESUME"
+        );
+
+    }
+
+
+    else if (
+        stageState ===
+        "ready"
+    ) {
+
+        drawMessage(
+            "STAGE " +
+            String(stage)
+                .padStart(2, "0"),
+
+            "INCOMING FORMATION"
+        );
+
+    }
+
+
+    else if (
+        stageState ===
+        "gameover"
+    ) {
+
+        drawMessage(
+            "GAME OVER",
+            "PRESS R TO RESTART"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   MAIN LOOP
+   ========================================================= */
+
+function gameLoop(timestamp) {
+
+    const dt =
+        Math.min(
+            (timestamp - lastTime) /
+            1000,
+            .033
+        );
+
+
+    lastTime =
+        timestamp;
+
+
+    elapsed += dt;
+
+
+    if (
+        gameRunning &&
+        !paused &&
+        !gameOver
+    ) {
+
+        updatePlayer(dt);
+
+        updateFormation(dt);
+
+        updateDivers(dt);
+
+        updateReturning(dt);
+
+        updateShots(dt);
+
+        enemyFire(dt);
+
+        checkCollisions();
+
+        updateParticles(dt);
+
+        updateStage(dt);
+
+    }
+
+
+    draw(dt);
+
+
+    requestAnimationFrame(
+        gameLoop
+    );
+
+}
+
+
+requestAnimationFrame(
+    gameLoop
+);
+
+
+/* =========================================================
+   START GAME
+   ========================================================= */
+
+function startGame() {
+
+    if (
+        gameRunning
+    ) {
+        return;
+    }
+
+
+    gameRunning =
+        true;
+
+    paused =
+        false;
+
+    gameOver =
+        false;
+
+
+    stageState =
+        "ready";
+
+    stageTimer =
+        .8;
+
+
+    formationStatusEl.textContent =
+        "READY";
+
+
+    gameStatusLabel.textContent =
+        "SYSTEM ACTIVE";
+
+
+    startButton.textContent =
+        "GAME RUNNING";
+
+
+    pauseButton.textContent =
+        "PAUSE";
+
+}
+
+
+/* =========================================================
+   PAUSE
+   ========================================================= */
+
+function togglePause() {
+
+    if (
+        !gameRunning ||
+        gameOver
+    ) {
+        return;
+    }
+
+
+    paused =
+        !paused;
+
+
+    if (
+        paused
+    ) {
+
+        formationStatusEl.textContent =
+            "PAUSED";
+
+        gameStatusLabel.textContent =
+            "SYSTEM PAUSED";
+
+        pauseButton.textContent =
+            "RESUME";
+
+    } else {
+
+        formationStatusEl.textContent =
+            stageState ===
+            "playing"
+                ? "ACTIVE"
+                : "READY";
+
+        gameStatusLabel.textContent =
+            "SYSTEM ACTIVE";
+
+        pauseButton.textContent =
+            "PAUSE";
+
+    }
+
+}
+
+
+/* =========================================================
+   GAME OVER
+   ========================================================= */
+
+function endGame() {
+
+    gameRunning =
+        false;
+
+    gameOver =
+        true;
+
+    stageState =
+        "gameover";
+
+
+    formationStatusEl.textContent =
+        "OFFLINE";
+
+
+    gameStatusLabel.textContent =
+        "GAME OVER";
+
+
+    startButton.textContent =
+        "START GAME";
+
+
+    pauseButton.textContent =
+        "PAUSE";
+
+
+    if (
+        score > highScore
+    ) {
+
+        highScore =
+            score;
+
+        localStorage.setItem(
+            "t3k9-galaga-highscore",
+            String(highScore)
+        );
+
+    }
+
+
+    updateUI();
+
+}
+
+
+/* =========================================================
+   RESET GAME
+   ========================================================= */
+
+function resetGame() {
+
+    gameRunning =
+        false;
+
+    paused =
+        false;
+
+    gameOver =
+        false;
+
+
+    score =
+        0;
+
+    stage =
+        1;
+
+    lives =
+        3;
+
+
+    stageState =
+        "ready";
+
+    stageTimer =
+        .8;
+
+
+    formationOffset =
+        0;
+
+    formationDirection =
+        1;
+
+
+    player.x =
+        W / 2;
+
+    player.fireCooldown =
+        0;
+
+    player.invulnerable =
+        0;
+
+    player.dual =
+        false;
+
+    player.captured =
+        false;
+
+
+    playerShots = [];
+
+    enemyShots = [];
+
+    enemies = [];
+
+    divers = [];
+
+    particles = [];
+
+
+    formationStatusEl.textContent =
+        "READY";
+
+
+    fighterModeEl.textContent =
+        "SINGLE";
+
+
+    gameStatusLabel.textContent =
+        "SYSTEM READY";
+
+
+    startButton.textContent =
+        "START GAME";
+
+
+    pauseButton.textContent =
+        "PAUSE";
+
+
+    updateUI();
+
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+startButton.addEventListener(
+    "click",
+    () => {
+
+        if (
+            gameOver
+        ) {
+
+            resetGame();
+
+        }
+
+
+        startGame();
+
+    }
+);
+
+
+pauseButton.addEventListener(
+    "click",
+    togglePause
+);
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+resetGame();
+
+</script>
+
+</body>
+</html>
